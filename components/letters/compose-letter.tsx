@@ -12,7 +12,7 @@ export default function ComposeLetter() {
   const [isSending, startSending] = useTransition();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const MAX_CHARS = 1500;
+  const MAX_CHARS = 500;
 
   // 1. Background Scroll Lock: Prevents the main page from scrolling while writing
   useEffect(() => {
