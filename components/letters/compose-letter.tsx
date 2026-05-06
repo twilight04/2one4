@@ -1,38 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CiPaperplane } from "react-icons/ci";
-import { useRouter } from "next/navigation";
 import { RxCross2 } from "react-icons/rx";
+import { composeLetterAction } from "@/app/actions/compose-letter.action";
 
 export default function ComposeLetter() {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
-  const [isSending, setIsSending] = useState(false);
-  const router = useRouter();
+  const [isSending, startSending] = useTransition();
 
   const handleSend = async () => {
     if (!content.trim()) return;
-    setIsSending(true);
 
-    try {
-      const res = await fetch("/api/letters", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
-      });
+    startSending(async () => {
+      const { success } = await composeLetterAction(content);
 
-      if (res.ok) {
-        setContent("");
+      if (success) {
         setIsOpen(false);
-        router.refresh();
+        setContent("");
       }
-    } catch (error) {
-      console.error("Failed to broadcast:", error);
-    } finally {
-      setIsSending(false);
-    }
+    });
   };
 
   return (

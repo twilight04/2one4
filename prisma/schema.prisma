@@ -13,7 +13,7 @@ datasource db {
 }
 
 model Letter {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   content   String
   createdAt DateTime @default(now())
 }

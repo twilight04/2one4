@@ -1,7 +1,5 @@
 import prisma from "@/lib/prisma";
 import LettersGrid from "@/components/letters/letters-grid";
-import Link from "next/link";
-import { CiPaperplane } from "react-icons/ci";
 import ComposeLetter from "@/components/letters/compose-letter";
 
 export default async function Page() {
@@ -58,7 +56,7 @@ export default async function Page() {
         {/* 5. Footer */}
         <footer className="mt-32 pb-10 text-center">
           <p className="text-[10px] font-mono text-stone-400 uppercase tracking-[0.5em]">
-            No Accounts • No Replies • Just the Void
+            No Accounts • No Replies • Just the Void • Dev by JC Tecson
           </p>
         </footer>
       </div>
