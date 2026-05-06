@@ -5,6 +5,10 @@ import { revalidatePath } from "next/cache";
 
 export async function composeLetterAction(content: string) {
   try {
+    if (content.length > 1000) {
+      return { success: false, error: "Signal too long for the frequency." };
+    }
+
     const letter = await prisma.letter.create({
       data: {
         content,

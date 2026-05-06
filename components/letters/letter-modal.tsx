@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react"; //
+import { motion } from "framer-motion";
 import LetterPaper from "./letter-paper";
 import { Letter } from "@/app/generated/prisma/client";
 
@@ -11,9 +12,15 @@ export default function LetterModal({
   letter: Letter;
   onClose: () => void;
 }) {
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   return (
-    /* We use AnimatePresence in the parent component (LettersGrid) 
-       to ensure this exit animation plays! */
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -22,7 +29,6 @@ export default function LetterModal({
       onClick={onClose}
     >
       <motion.div
-        /* Entrance: Slides up and pops in */
         initial={{ y: 100, opacity: 0, scale: 0.9, rotate: -2 }}
         animate={{
           y: 0,
@@ -31,7 +37,6 @@ export default function LetterModal({
           rotate: 0,
           transition: { type: "spring", damping: 20, stiffness: 100 },
         }}
-        /* Exit: Folds and slides down (the "Tuck Away" animation) */
         exit={{
           y: 200,
           opacity: 0,
@@ -39,17 +44,16 @@ export default function LetterModal({
           rotate: 5,
           transition: { duration: 0.4, ease: "backIn" },
         }}
-        className="w-full max-w-lg relative"
+        className="w-full max-w-lg relative flex flex-col items-center"
         onClick={(e) => e.stopPropagation()}
       >
         <LetterPaper letter={letter} />
 
-        {/* Improved Close Button with Hover Effect */}
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={onClose}
-          className="mt-8 block mx-auto text-xs font-bold uppercase tracking-[0.2em] text-stone-400 hover:text-rose-800 transition-colors bg-white/50 px-4 py-2 rounded-full shadow-sm"
+          className="mt-8 block mx-auto text-xs font-bold uppercase tracking-[0.2em] text-stone-400 hover:text-rose-800 transition-colors bg-white/50 px-6 py-3 rounded-full shadow-sm backdrop-blur-sm"
         >
           Return to Void
         </motion.button>

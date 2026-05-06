@@ -11,7 +11,7 @@ export default function LettersGrid({ letters }: { letters: Letter[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         {letters.map((letter) => (
           <EnvelopeCard
             key={letter.id}
@@ -24,7 +24,7 @@ export default function LettersGrid({ letters }: { letters: Letter[] }) {
       <AnimatePresence>
         {selectedLetter && (
           <LetterModal
-            key="modal" // key is important for AnimatePresence
+            key="modal"
             letter={selectedLetter}
             onClose={() => setSelectedLetter(null)}
           />

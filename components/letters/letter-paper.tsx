@@ -2,31 +2,45 @@
 
 import { Letter } from "@/app/generated/prisma/client";
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 export default function LetterPaper({ letter }: { letter: Letter }) {
-  // Split the content into an array of characters
   const characters = Array.from(letter.content);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Animation variants for the container
+  // Auto-scroll logic: watches for new characters added to the DOM
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const observer = new MutationObserver(() => {
+      container.scrollTop = container.scrollHeight;
+    });
+
+    // Observe when the character spans are added
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.03, // Speed of "writing"
+        staggerChildren: 0.02,
       },
     },
   };
 
-  // Animation variants for each character
   const childVariants = {
-    hidden: { opacity: 0, y: 5 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.1,
-      },
+      transition: { duration: 0.1 },
     },
   };
 
@@ -34,17 +48,30 @@ export default function LetterPaper({ letter }: { letter: Letter }) {
     <motion.div
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="relative w-full max-w-lg bg-[#fdf6e3] p-10 shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff] rounded-sm min-h-[450px] border border-stone-200"
+      className="relative w-full max-w-lg bg-[#fdf6e3] shadow-2xl rounded-sm border border-stone-200 max-h-[70vh] flex flex-col overflow-hidden"
       style={{
         backgroundImage: "linear-gradient(#e5e5e5 1px, transparent 1px)",
-        backgroundSize: "100% 2.5rem", // Adjusted to match text height
+        backgroundSize: "100% 2.5rem",
         lineHeight: "2.5rem",
       }}
     >
-      {/* Red vertical margin line */}
+      {/* Ensure scrollbar is hidden via CSS */}
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+
       <div className="absolute left-10 top-0 bottom-0 w-[1px] bg-red-200/60" />
 
-      <div className="relative z-10 pl-6">
+      <div
+        ref={scrollContainerRef}
+        className="relative z-10 flex-grow overflow-y-auto p-10 pl-16 no-scrollbar"
+      >
         <header className="mb-10 flex justify-between items-baseline border-b border-stone-200 pb-2">
           <span className="text-[10px] font-mono text-stone-400 uppercase tracking-widest">
             {new Date(letter.createdAt).toLocaleDateString(undefined, {
@@ -56,9 +83,8 @@ export default function LetterPaper({ letter }: { letter: Letter }) {
           </span>
         </header>
 
-        {/* Typing Animation Area */}
         <motion.div
-          className="font-handwriting text-3xl text-stone-800/90 leading-[2.5rem] antialiased"
+          className="font-handwriting text-3xl text-stone-800/90 leading-[2.5rem] antialiased break-words whitespace-pre-wrap"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -75,7 +101,6 @@ export default function LetterPaper({ letter }: { letter: Letter }) {
         </footer>
       </div>
 
-      {/* Subtle paper texture overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
     </motion.div>
   );
