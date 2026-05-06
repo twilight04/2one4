@@ -7,6 +7,7 @@ export default async function Page() {
     orderBy: {
       createdAt: "desc",
     },
+    take: 100,
   });
 
   return (
