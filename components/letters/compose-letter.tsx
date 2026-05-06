@@ -10,35 +10,30 @@ export default function ComposeLetter() {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
   const [isSending, startSending] = useTransition();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const scrollableAreaRef = useRef<HTMLDivElement>(null);
+
+  const hiddenInputRef = useRef<HTMLTextAreaElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null); // New ref for the cursor
 
   const MAX_CHARS = 500;
 
-  // 1. Background Scroll Lock
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "unset";
-    return () => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      setTimeout(() => hiddenInputRef.current?.focus(), 100);
+    } else {
       document.body.style.overflow = "unset";
-    };
+    }
   }, [isOpen]);
 
-  // 2. Auto-resize and Auto-scroll
+  // FIXED SYNC SCROLL: Only scroll if the cursor is near the bottom
   useEffect(() => {
-    const textarea = textareaRef.current;
-    const scrollContainer = scrollableAreaRef.current;
-    if (!textarea || !scrollContainer) return;
-
-    // Reset height to shrink if text is deleted
-    textarea.style.height = "0px";
-    const newHeight = textarea.scrollHeight;
-    textarea.style.height = `${newHeight}px`;
-
-    // Always scroll the container to the bottom as the user types
-    scrollContainer.scrollTo({
-      top: scrollContainer.scrollHeight,
-      behavior: "smooth",
-    });
+    if (cursorRef.current) {
+      cursorRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest", // This prevents the "jumping to bottom" issue
+      });
+    }
   }, [content]);
 
   const handleSend = async () => {
@@ -56,15 +51,15 @@ export default function ComposeLetter() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="group relative inline-flex items-center gap-3 bg-stone-800 text-stone-100 px-10 py-4 rounded-full font-bold transition-all hover:bg-rose-900 hover:shadow-[0_10px_40px_rgba(159,18,57,0.15)] active:scale-95"
+        className="group relative inline-flex items-center gap-3 bg-stone-800 text-stone-100 px-10 py-4 rounded-full font-bold transition-all hover:bg-rose-900 active:scale-95"
       >
-        <CiPaperplane className="w-6 h-6 transition-transform group-hover:rotate-12 text-rose-300" />
+        <CiPaperplane className="w-6 h-6 text-rose-300" />
         <span className="tracking-wide text-lg font-serif">Write a Letter</span>
       </button>
 
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -73,60 +68,86 @@ export default function ComposeLetter() {
               className="absolute inset-0 bg-stone-200/60 backdrop-blur-md"
             />
 
+            <textarea
+              ref={hiddenInputRef}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              maxLength={MAX_CHARS}
+              className="absolute opacity-0 pointer-events-none"
+              aria-hidden="true"
+            />
+
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100vh", opacity: 0 }}
-              className="relative w-full max-w-lg bg-[#fdf6e3] shadow-2xl rounded-sm border border-stone-200 flex flex-col overflow-hidden h-[60vh] md:h-[70vh]"
+              onClick={() => hiddenInputRef.current?.focus()}
+              className="relative w-full max-w-lg bg-[#fdf6e3] shadow-2xl rounded-sm border border-stone- stone-200 h-[65vh] md:h-[70vh] flex flex-col overflow-hidden cursor-text"
               style={{
                 backgroundImage:
                   "linear-gradient(#e5e5e5 1px, transparent 1px)",
                 backgroundSize: "100% 2.5rem",
               }}
             >
+              <style jsx global>{`
+                .no-scrollbar::-webkit-scrollbar {
+                  display: none;
+                }
+                .no-scrollbar {
+                  -ms-overflow-style: none;
+                  scrollbar-width: none;
+                }
+              `}</style>
+
               <div className="absolute left-10 top-0 bottom-0 w-[1px] bg-red-200/40" />
 
-              {/* Fixed Header */}
-              <header className="relative z-20 p-8 pl-16 flex justify-between items-center">
+              <header className="relative z-20 p-8 pl-16 flex justify-between items-center bg-[#fdf6e3]">
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-mono text-stone-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-mono text-stone-400 uppercase tracking-widest leading-none">
                     New Signal
                   </span>
-                  <span className="text-[9px] text-rose-800/60 font-mono italic">
+                  <span className="text-[9px] text-rose-800/60 font-mono italic leading-none mt-1">
                     Unspoken Frequency
                   </span>
                 </div>
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen(false);
+                  }}
                   className="text-stone-300 hover:text-rose-800 transition-all"
                 >
                   <RxCross2 className="w-6 h-6" />
                 </button>
               </header>
 
-              {/* Scrollable Content Area */}
               <div
-                ref={scrollableAreaRef}
-                className="relative z-10 flex-grow overflow-y-auto px-8 pl-16 py-2 scroll-smooth scrollbar-hide"
+                ref={scrollContainerRef}
+                className="relative z-10 flex-grow overflow-y-auto px-10 pl-16 py-2 no-scrollbar scroll-smooth touch-pan-y flex flex-col justify-start" // Added flex flex-col justify-start
               >
-                <textarea
-                  ref={textareaRef}
-                  autoFocus
-                  maxLength={MAX_CHARS}
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Tell the frequency..."
-                  className="w-full bg-transparent font-handwriting text-3xl text-stone-700 leading-[2.5rem] focus:outline-none resize-none placeholder:text-stone-200 antialiased overflow-hidden min-h-full"
-                  disabled={isSending}
-                />
-                {/* Spacer to allow scrolling past the last line */}
-                <div className="h-20" />
+                <div className="font-handwriting text-3xl text-stone-700 leading-[2.5rem] antialiased break-words whitespace-pre-wrap text-left w-full pt-4">
+                  {/* Added text-left, w-full, and pt-4 for top spacing */}
+                  {content}
+                  <span
+                    ref={cursorRef}
+                    className="inline-block w-2 h-8 bg-rose-800/30 ml-1 animate-pulse align-middle"
+                  />
+                  {!content && (
+                    <span className="text-stone-200 pointer-events-none">
+                      Tell the frequency...
+                    </span>
+                  )}
+                </div>
+                <div className="h-24 flex-shrink-0" />{" "}
+                {/* Added flex-shrink-0 */}
               </div>
 
-              {/* Fixed Footer */}
-              <footer className="relative z-20 p-8 pl-16 bg-gradient-to-t from-[#fdf6e3] via-[#fdf6e3] to-transparent flex flex-col items-end gap-1">
+              <footer className="relative z-20 p-8 pl-16 flex flex-col items-end gap-1 bg-gradient-to-t from-[#fdf6e3] via-[#fdf6e3] to-transparent">
                 <button
-                  onClick={handleSend}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSend();
+                  }}
                   disabled={isSending || !content.trim()}
                   className={`group flex items-center gap-2 text-sm font-bold uppercase tracking-[0.2em] transition-all ${
                     isSending
@@ -139,11 +160,9 @@ export default function ComposeLetter() {
                     <CiPaperplane className="w-5 h-5 group-hover:translate-x-1" />
                   )}
                 </button>
-                <span
-                  className={`text-[9px] font-mono mr-2 ${content.length >= MAX_CHARS ? "text-rose-600 font-bold" : "text-stone-300"}`}
-                >
+                <div className="text-[9px] font-mono text-stone-300 opacity-60">
                   {content.length} / {MAX_CHARS}
-                </span>
+                </div>
               </footer>
 
               <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]" />
