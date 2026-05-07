@@ -58,16 +58,6 @@ export default function LetterPaper({ letter }: { letter: Letter }) {
         backgroundSize: "100% 2.5rem",
       }}
     >
-      <style jsx global>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
-
       <div className="absolute left-10 top-0 bottom-0 w-[1px] bg-red-200/60" />
 
       {/* Header - Fixed */}
@@ -100,7 +90,6 @@ export default function LetterPaper({ letter }: { letter: Letter }) {
             className="inline-block w-2 h-8 bg-rose-800/30 ml-1 animate-pulse align-middle"
           />
         </div>
-        <div className="h-24 flex-shrink-0" />
       </div>
 
       {/* Footer - Floating style */}
