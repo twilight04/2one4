@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect } from "react"; //
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import LetterPaper from "./letter-paper";
 import { Letter } from "@/app/generated/prisma/client";
 import { usePathname, useRouter } from "next/navigation";
+import { CiLink } from "react-icons/ci";
 
 export default function LetterModal({ letter }: { letter: Letter }) {
   const pathname = usePathname();
   const isOpen = pathname === `/letter/${letter.id}`;
-
   const router = useRouter();
 
-  // Prevent background scroll when modal is open
+  const [copied, setCopied] = useState(false);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -22,6 +23,17 @@ export default function LetterModal({ letter }: { letter: Letter }) {
 
   const handleClose = () => {
     router.push("/");
+  };
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/letter/${letter.id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy signal:", err);
+    }
   };
 
   return isOpen ? (
@@ -54,14 +66,28 @@ export default function LetterModal({ letter }: { letter: Letter }) {
         >
           <LetterPaper letter={letter} />
 
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="mt-8 block mx-auto text-xs font-bold uppercase tracking-[0.2em] text-stone-400 hover:text-rose-800 transition-colors bg-white/50 px-6 py-3 rounded-full shadow-sm backdrop-blur-sm"
-            onClick={handleClose}
-          >
-            Return to Void
-          </motion.button>
+          <div className="mt-8 flex items-center gap-4">
+            {/* Share / Copy Link Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleShare}
+              className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 hover:text-rose-800 transition-colors bg-white/50 px-5 py-3 rounded-full shadow-sm backdrop-blur-sm"
+            >
+              <CiLink className="w-4 h-4" />
+              {copied ? "Signal Captured" : "Share Frequency"}
+            </motion.button>
+
+            {/* Close Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 hover:text-rose-800 transition-colors bg-white/30 px-5 py-3 rounded-full shadow-sm backdrop-blur-sm"
+              onClick={handleClose}
+            >
+              Return to Void
+            </motion.button>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
