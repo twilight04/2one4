@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import LetterModal from "./letter-modal";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default async function LetterContent({ id }: { id: string }) {
   const letter = await prisma.letter.findUnique({
@@ -9,7 +9,7 @@ export default async function LetterContent({ id }: { id: string }) {
     },
   });
 
-  if (!letter) return notFound();
+  if (!letter) return redirect("/");
 
   return <LetterModal key={letter?.id} letter={letter} />;
 }
