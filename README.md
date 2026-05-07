@@ -1,90 +1,51 @@
-````markdown
-# 214Hz — Unspoken Frequency
+# 214Hz
 
-A quiet space for the frequencies we carry but rarely broadcast. This is a minimal web application where users can "broadcast" their unspoken thoughts into the collective hum.[cite: 2]
+A cozy digital space for writing and reading heartfelt letters.
 
-**Features:**
-
-- **Minimalist UI:** Hand-written aesthetic with paper-texture overlays.[cite: 2]
-
-- **Intercepted Routing:** Seamless transitions between the feed and the letter composition.[cite: 2]
-
-- **No Accounts:** Pure, anonymous transmissions.[cite: 2]
+Live App: https://214hz.vercel.app/
 
 ---
 
-## 🏗️ Getting Started
+## ✉️ About
 
-### 1. Clone & Install
+214Hz is a minimalist web application where users can open envelopes and read meaningful letters.
 
-```bash
+The experience focuses on:
 
-git clone <your-repo-url>
+- calm and cozy UI
+- emotional storytelling
+- interactive envelope animations
+- distraction-free reading
 
-cd 214hz
-
-npm install
-```
-````
-
-### 2. Environment Setup
-
-Copy the example environment file and fill in your local database credentials:[cite: 2]
-
-```bash
-
-cp .env.example .env
-
-```
-
-**Required Variables:**
-
-- `DATABASE_URL`: Your PostgreSQL (or chosen DB) connection string.[cite: 2]
-
-### 3. Database Initialization
-
-Ensure your database is in sync with the Prisma schema:[cite: 2]
-
-```bash
-
-npx prisma db push
-
-```
-
-### 4. Run the Broadcast
-
-```bash
-
-npm run dev
-
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the frequency.[cite: 2]
+The project was built as a creative web experience using modern frontend tools.
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Features
 
-- **Framework:** [Next.js 15 (App Router)](https://nextjs.org/)[cite: 2]
-
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)[cite: 2]
-
-- **Animations:** [Framer Motion](https://www.framer.com/motion/)[cite: 2]
-
-- **Database:** [Prisma ORM](https://www.prisma.io/)[cite: 2]
-
-- **Icons:** `react-icons`[cite: 2]
+- Interactive envelope cards
+- Letter modal reader
+- Responsive grid layout
+- Smooth UI transitions
+- Mobile friendly design
+- Minimalist aesthetic
 
 ---
 
-## 📡 Deployment
+## 🛠 Tech Stack
 
-The easiest way to deploy is via the [Vercel Platform](https://vercel.com/new). Make sure to add your `DATABASE_URL` to the Vercel Project Settings under Environment Variables.[cite: 2]
+- React
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Vercel (deployment)
 
 ---
 
-> _"Tune into the unspoken, seal your thoughts in a letter, and let them drift into the collective hum."_[cite: 2]
+## 📦 Installation
 
-```
+Clone the repository:
 
+```bash
+git clone https://github.com/twilight04/2one4.git
 ```
