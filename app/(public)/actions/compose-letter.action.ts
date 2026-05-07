@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function composeLetterAction(content: string) {
   try {
@@ -20,10 +21,9 @@ export async function composeLetterAction(content: string) {
     }
 
     revalidatePath("/");
-
-    return { success: true };
+    return redirect("/");
   } catch (error) {
     console.error("Failed to broadcast:", error);
-    return { success: false };
+    return { success: false, error: "Failed to broadcast" };
   }
 }

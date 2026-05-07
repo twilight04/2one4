@@ -48,12 +48,7 @@ export default function ComposeModal() {
   const handleSend = async () => {
     if (!content.trim()) return;
     startSending(async () => {
-      const { success } = await composeLetterAction(content);
-      if (success) {
-        // Refresh and go back to home
-        router.push("/");
-        router.refresh();
-      }
+      await composeLetterAction(content);
     });
   };
 
