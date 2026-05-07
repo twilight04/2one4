@@ -80,16 +80,29 @@ http://localhost:3000
 
 ```text
 components/
-  EnvelopeCard.tsx
-  LetterModal.tsx
-  LettersGrid.tsx
+  letters/
+    layout/
+      home-layout.tsx
+    compose-modal.tsx
+    envelope-card.tsx
+    letter-modal.tsx
+    letter-paper.tsx
+    letters-grid.tsx
 
 app/
-  page.tsx
-  layout.tsx
+  (public)/
+    @modal/
+      (.)compose/
+        page.tsx
+    actions/
+      compose-letter.action.ts
+    compose/
+      page.tsx
+    layout.tsx
+    page.tsx
 
-public/
-styles/
+lib/
+  prisma.ts
 ```
 
 ---
