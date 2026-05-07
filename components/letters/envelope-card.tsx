@@ -1,21 +1,13 @@
 "use client";
 
-import { Letter } from "@/app/generated/prisma/client";
 import { motion } from "framer-motion";
 
-export default function EnvelopeCard({
-  letter,
-  onOpen,
-}: {
-  letter: Letter;
-  onOpen: () => void;
-}) {
+export default function EnvelopeCard() {
   return (
     <motion.div
       whileHover={{ scale: 1.05, y: -5 }}
       whileTap={{ scale: 0.98 }}
       className="relative w-full h-40 group cursor-pointer"
-      onClick={onOpen}
     >
       {/* Envelope Body */}
       <div className="absolute inset-0 bg-[#f3d5c0] rounded-sm shadow-md border border-[#e6bfa8]/50 overflow-hidden">
