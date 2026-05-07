@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+````markdown
+# 214Hz — Unspoken Frequency
 
-## Getting Started
+A quiet space for the frequencies we carry but rarely broadcast. This is a minimal web application where users can "broadcast" their unspoken thoughts into the collective hum.[cite: 2]
 
-First, run the development server:
+**Features:**
+
+- **Minimalist UI:** Hand-written aesthetic with paper-texture overlays.[cite: 2]
+
+- **Intercepted Routing:** Seamless transitions between the feed and the letter composition.[cite: 2]
+
+- **No Accounts:** Pure, anonymous transmissions.[cite: 2]
+
+---
+
+## 🏗️ Getting Started
+
+### 1. Clone & Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+git clone <your-repo-url>
+
+cd 214hz
+
+npm install
+```
+````
+
+### 2. Environment Setup
+
+Copy the example environment file and fill in your local database credentials:[cite: 2]
+
+```bash
+
+cp .env.example .env
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Required Variables:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `DATABASE_URL`: Your PostgreSQL (or chosen DB) connection string.[cite: 2]
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Database Initialization
 
-## Learn More
+Ensure your database is in sync with the Prisma schema:[cite: 2]
 
-To learn more about Next.js, take a look at the following resources:
+```bash
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+npx prisma db push
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
 
-## Deploy on Vercel
+### 4. Run the Broadcast
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+npm run dev
+
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the frequency.[cite: 2]
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js 15 (App Router)](https://nextjs.org/)[cite: 2]
+
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)[cite: 2]
+
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)[cite: 2]
+
+- **Database:** [Prisma ORM](https://www.prisma.io/)[cite: 2]
+
+- **Icons:** `react-icons`[cite: 2]
+
+---
+
+## 📡 Deployment
+
+The easiest way to deploy is via the [Vercel Platform](https://vercel.com/new). Make sure to add your `DATABASE_URL` to the Vercel Project Settings under Environment Variables.[cite: 2]
+
+---
+
+> _"Tune into the unspoken, seal your thoughts in a letter, and let them drift into the collective hum."_[cite: 2]
+
+```
+
+```
