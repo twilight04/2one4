@@ -19,11 +19,11 @@ export async function composeLetterAction(content: string) {
     if (!letter) {
       throw new Error("Failed to broadcast");
     }
-
-    revalidatePath("/");
-    return redirect("/");
   } catch (error) {
     console.error("Failed to broadcast:", error);
     return { success: false, error: "Failed to broadcast" };
   }
+
+  revalidatePath("/");
+  return redirect("/");
 }
