@@ -131,7 +131,6 @@ export default function ComposeModal() {
                 </span>
               )}
             </div>
-            <div className="h-24 flex-shrink-0" />
           </div>
 
           <footer className="relative z-20 p-8 pl-16 flex flex-col items-end gap-1 bg-gradient-to-t from-[#fdf6e3] via-[#fdf6e3] to-transparent">
