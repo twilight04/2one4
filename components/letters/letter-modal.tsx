@@ -15,11 +15,15 @@ export default function LetterModal({ letter }: { letter: Letter }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, []);
+  }, [isOpen]);
 
   const handleClose = () => {
     router.push("/");
