@@ -4,7 +4,7 @@ import { useState, useTransition, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CiPaperplane } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
-import { composeLetterAction } from "@/app/actions/compose-letter.action";
+import { composeLetterAction } from "@/app/(public)/actions/compose-letter.action";
 
 export default function ComposeLetter() {
   const [isOpen, setIsOpen] = useState(false);
