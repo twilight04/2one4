@@ -30,6 +30,7 @@ export default function ComposeModal() {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      setTimeout(() => hiddenInputRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = "unset";
     }
