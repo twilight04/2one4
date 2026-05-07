@@ -49,3 +49,75 @@ Clone the repository:
 ```bash
 git clone https://github.com/twilight04/2one4.git
 ```
+
+Go into the project directory:
+
+```bash
+cd 2one4
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open in your browser:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+components/
+  EnvelopeCard.tsx
+  LetterModal.tsx
+  LettersGrid.tsx
+
+app/
+  page.tsx
+  layout.tsx
+
+public/
+styles/
+```
+
+---
+
+## 🌐 Deployment
+
+The project is deployed using **Vercel**.
+
+To deploy your own version:
+
+1. Fork the repository
+2. Connect it to Vercel
+3. Deploy
+
+---
+
+## 💡 Inspiration
+
+214Hz was created as a small digital space for thoughtful messages and quiet moments on the web.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 🤍 Author
+
+Created by **JC Tecson**
